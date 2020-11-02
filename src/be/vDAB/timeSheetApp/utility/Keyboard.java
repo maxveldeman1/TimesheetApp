@@ -13,7 +13,7 @@ public class Keyboard {
         return answer = keyboard.next();
     }
 
-    public int askForNumber(String text) {
+    public int askForInt(String text) {
         System.out.println(text);
         return number = keyboard.nextInt();
     }
@@ -22,5 +22,6 @@ public class Keyboard {
         System.out.println(text);
         return dbl = keyboard.nextDouble();
     }
+
 
 }

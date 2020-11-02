@@ -1,5 +1,7 @@
 package be.vDAB.timeSheetApp.slots;
 
+import be.vDAB.timeSheetApp.utility.AskTime;
+
 import java.time.LocalTime;
 
 public interface Slot {
@@ -16,7 +18,7 @@ public interface Slot {
 
     LocalTime getStart();
 
-    void setTotalMinutes(long totalMinutes);
+    long getTotalMinutes();
 
     void printSlotInfo();
 

@@ -1,6 +1,9 @@
 package be.vDAB.timeSheetApp.slots;
 
+import be.vDAB.timeSheetApp.utility.AskTime;
+
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 public class BreakSlot implements Slot {
     String description;
@@ -9,7 +12,15 @@ public class BreakSlot implements Slot {
     LocalTime start;
     long totalMinutes;
 
+    public BreakSlot(LocalTime start, LocalTime end) {
+    setEnd(end);
+    setStart(start);
+    }
 
+    public BreakSlot(LocalTime start,LocalTime end, String description) {
+    this(start, end);
+    setDescription(description);
+    }
 
 
     @Override
@@ -29,7 +40,7 @@ public class BreakSlot implements Slot {
 
     @Override
     public void setEnd(LocalTime end) {
-
+        this.end = end;
     }
 
     @Override
@@ -39,6 +50,8 @@ public class BreakSlot implements Slot {
 
     @Override
     public void setStart(LocalTime start) {
+        this.start = start;
+
 
     }
 
@@ -48,7 +61,8 @@ public class BreakSlot implements Slot {
     }
 
     @Override
-    public void setTotalMinutes(long totalMinutes) {
+    public long getTotalMinutes() {
+        return totalMinutes = ChronoUnit.MINUTES.between(getStart(),getEnd());
 
     }
 

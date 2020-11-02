@@ -1,6 +1,9 @@
 package be.vDAB.timeSheetApp.slots;
 
+import be.vDAB.timeSheetApp.utility.AskTime;
+
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
 public class TimeSlot implements Slot {
@@ -10,8 +13,6 @@ public class TimeSlot implements Slot {
     LocalTime start;
     long totalMinutes;
 
-
-
     public TimeSlot(LocalTime start, LocalTime end){
         setStart(start);
         setEnd(end);
@@ -20,7 +21,6 @@ public class TimeSlot implements Slot {
        this(start,end);
         setDescription(description);
     }
-
 
     @Override
     public void setDescription(String description) {
@@ -32,6 +32,10 @@ public class TimeSlot implements Slot {
         return description;
     }
 
+    /**
+     * Implementatie met Rates per minuut.
+     * @param minutesByType
+     */
     @Override
     public void setMinutesByType(long[] minutesByType) {
 
@@ -39,7 +43,7 @@ public class TimeSlot implements Slot {
 
     @Override
     public void setEnd(LocalTime end) {
-        LocalTime WORKDAY_END_HOUR = end;
+        this.end = end;
 
     }
 
@@ -50,7 +54,8 @@ public class TimeSlot implements Slot {
 
     @Override
     public void setStart(LocalTime start) {
-        LocalTime WORKDAY_START_HOUR = start;
+        this.start= start;
+
 
     }
 
@@ -60,7 +65,8 @@ public class TimeSlot implements Slot {
     }
 
     @Override
-    public void setTotalMinutes(long totalMinutes) {
+    public long getTotalMinutes() {
+        return totalMinutes = ChronoUnit.MINUTES.between(start,end);
 
     }
 
