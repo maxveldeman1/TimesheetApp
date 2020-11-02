@@ -22,6 +22,6 @@ public class WorkedWeek implements Week{
     }
 
     public void setWorkweek(DayOfWeek[] workweek) {
-        for (int i)
+
     }
 }
