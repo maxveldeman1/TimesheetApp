@@ -22,7 +22,7 @@ public class WorkedWeek implements Week {
 
         }
         else {firstDayOfWeek = DayOfWeek.of(numberOfDay);}
-
+        System.out.println("Uw eerste dag van de week is: " + firstDayOfWeek);
     }
 
     public DayOfWeek getFirstDayOfWeek() {
@@ -34,18 +34,15 @@ public class WorkedWeek implements Week {
     }
 
     public void setWorkweek(DayOfWeek[] workweek) {
+        System.out.println("Dit is uw werkweek:");
         for (int i = 0; i <= DayOfWeek.values().length - 1; i++) {
             workweek[i] = firstDayOfWeek.plus(i);
-                System.out.println(workweek[i]);
+            System.out.println((i+1) +". " +workweek[i]);
 
             }
 
         }
 
-//        public boolean checkWorkWeekIsFilledIn
-//                true= return
-//                false= setworkweek
-//
     public boolean isCheckWorkWeekIsFilledIn() {
     for (DayOfWeek workedWeek: workweek){
         if (workedWeek != null) {

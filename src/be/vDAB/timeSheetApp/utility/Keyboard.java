@@ -1,5 +1,6 @@
 package be.vDAB.timeSheetApp.utility;
 
+import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -20,17 +21,15 @@ public class Keyboard {
      * door de exception NumberFormatException
      */
     public int askForInt(String text) {
+
         try {
             System.out.println(text);
-            number = keyboard.nextInt();
-        } catch (NumberFormatException nfe){
+            number = Integer.parseInt( keyboard.nextLine());
+        }
+        catch (NumberFormatException nfe){
             System.out.println("Gelieve een nummer in te geven.");
             askForInt(text);
         }
-//        catch (NoSuchElementException nse){
-//            System.out.println("Gelieve een correct nummer in te geven");
-//            askForInt(text);
-//        }
 
 //        keyboard.close();
         return number;

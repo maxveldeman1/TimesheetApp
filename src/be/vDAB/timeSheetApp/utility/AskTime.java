@@ -60,9 +60,7 @@ public class AskTime implements Temporal {
     String dateTimeLine = controlTimeHours(askTimeHours()) + ":" + controlTimeMinutes(askMinutes());
     DateTimeFormatter startTijd = DateTimeFormatter.ofPattern("H:m");
     userInputTime = LocalTime.parse(dateTimeLine, startTijd);
-    System.out.println(userInputTime);
-       System.out.println("-----------");
-        return userInputTime;
+    return userInputTime;
 
     }
 
