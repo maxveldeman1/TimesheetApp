@@ -13,7 +13,7 @@ public class Keyboard {
     public String askForText(String text) {
         System.out.println(text);
 //        keyboard.close();
-        return answer = keyboard.next();
+        return answer = keyboard.nextLine();
     }
 
     /**

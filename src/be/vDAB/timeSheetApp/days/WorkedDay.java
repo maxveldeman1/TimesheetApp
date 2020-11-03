@@ -6,6 +6,7 @@ import be.vDAB.timeSheetApp.slots.TimeSlot;
 import be.vDAB.timeSheetApp.utility.AskTime;
 import be.vDAB.timeSheetApp.utility.Keyboard;
 import be.vDAB.timeSheetApp.weeks.WorkedWeek;
+import org.w3c.dom.ls.LSOutput;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -16,11 +17,21 @@ public class WorkedDay extends WorkedWeek implements Day {
     long[] minutesByType;
     DayOfWeek hourlyRate;
     LocalDate date;
-    Slot[] timeSlots;
+    int numberOfTimeSlots;
+    Slot[] timeSlots = new Slot[numberOfTimeSlots+1];
     Keyboard keyboard = new Keyboard();
     DayOfWeek dayOfWorkWeek;
     LocalTime begintijd;
     LocalTime eindtijd;
+
+
+    public int getNumberOfTimeSlots() {
+        return numberOfTimeSlots;
+    }
+
+    public void setNumberOfTimeSlots(int numberOfTimeSlots) {
+        this.numberOfTimeSlots = numberOfTimeSlots;
+    }
 
     public void setDayOfWorkweek(DayOfWeek dayOfWorkWeek){
 //        welke dag wil je wijzigen? => keuze gebruiker => dat wordt onze workedday
@@ -50,45 +61,93 @@ public class WorkedDay extends WorkedWeek implements Day {
 
     @Override
     public void addSlot() {
-        int choice = keyboard.askForInt("What do you want to add:"+"\n"+ "1. Work moment." +"\n"+ "2. Break moment." + "\n" + "----------------");
-        if (choice > 2 || choice <1) {
-            System.out.println("Choose a number between 1 and 2.");
-            addSlot();
-        }
-        setDayOfWorkweek(dayOfWorkWeek);
-        if (choice ==1){
-            System.out.println("Adding a new Work moment on " + getDayOfWorkWeek());
-            inputSlot();
-            TimeSlot timeSlot = new TimeSlot(begintijd,eindtijd);
+        numberOfTimeSlots++;
+            int choice = getChoiceForSlot("What do you want to add:" + "\n" + "1. Work moment." + "\n" + "2. Break moment." + "\n" + "----------------");
+            setDayOfWorkweek(dayOfWorkWeek);
+
+            if (choice == 1) {
+                System.out.println("Adding a new Work moment on " + getDayOfWorkWeek());
+
+                zoveelsteMethode();
+
+                TimeSlot timeSlot = new TimeSlot(begintijd, eindtijd);
+                timeSlot.setDescription(keyboard.askForText("Name your timeslot:"));
+
+                timeSlots[numberOfTimeSlots] = timeSlot;
+
+
+
+            }
+            if (choice == 2) {
+                System.out.println("Adding a new Break moment on " + getDayOfWorkWeek());
+                inputSlot();
+                BreakSlot breakSlot = new BreakSlot(begintijd, eindtijd);
+                timeSlots[numberOfTimeSlots] = breakSlot;
+            }
 
 
         }
-        if (choice ==2){
-            System.out.println("Adding a new Break moment on " + getDayOfWorkWeek());
-            inputSlot();
-            BreakSlot breakSlot = new BreakSlot(begintijd, eindtijd);
-//
-        }
 
-
-
-
+    private void zoveelsteMethode() {
+        begintijd = inputSlot();
+        eindtijd = inputSlot();
+        checkIfEndhourIsBeforeStarttime();
     }
 
-    public void inputSlot() {
-        AskTime askTime = new AskTime();
-        LocalTime begintijd = askTime.getLocalTime("Give your starting time");
-        LocalTime eindtijd = askTime.getLocalTime("Give your ending time");
+    private void checkIfEndhourIsBeforeStarttime() {
         if (eindtijd.isBefore(begintijd)) {
             System.out.println("Please make sure your ending time is not before your starting time."+ "\n"+"If your work time is spread across two days, make 2 separate time slots.");
-            inputSlot();
+            zoveelsteMethode();
         }
+    }
+
+
+    private int getChoiceForSlot(String text) {
+        int choice = keyboard.askForInt(text);
+        if (choice > 2 || choice < 1) {
+            System.out.println("Choose a number between 1 and 2.");
+            getChoiceForSlot(text);
+        }
+        return choice;
+    }
+
+//    private int findEmptyPlaceInTimeSlots() {
+//        for (int i = 0; i < timeSlots.length; i++){
+//            if (timeSlots[i] == null){
+//               return i;
+//            }
+//        }
+//
+//        return numberOfTimeSlots+1;
+//    }
+
+    public LocalTime inputSlot() {
+        AskTime askTime = new AskTime();
+       LocalTime time = askTime.getLocalTime("Give your  time");
+//        LocalTime eindtijd = askTime.getLocalTime("Give your ending time");
+
+        return time;
     }
 
     @Override
-    public void removeSlot(Slot slot) {
+    public void removeSlot() {
+        System.out.println("Which slot would you like to remove?: ");
+        for( int j =0; j <timeSlots.length; j++){
+            System.out.println((j+1) +". "+ timeSlots[j]);
+        }
 
+        int removeSlotchoice = keyboard.askForInt("Please choose a number: ");
+        if (removeSlotchoice > numberOfTimeSlots || removeSlotchoice <= 0){
+            System.out.println("This is not a valid timeslot!");
+            removeSlot();
+        }else {
+        timeSlots[removeSlotchoice-1] = null;
+        numberOfTimeSlots--;
+        }
     }
+
+
+
 
 
     @Override

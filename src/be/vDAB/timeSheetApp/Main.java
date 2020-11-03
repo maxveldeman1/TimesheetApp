@@ -10,8 +10,12 @@ import java.time.LocalTime;
 
 public class Main {
     public static void main(String[] args) {
-        WorkedDay workedDay = new WorkedDay();
-        workedDay.addSlot();
+WorkedDay workedDay = new WorkedDay();
+workedDay.addSlot();
+workedDay.addSlot();
+workedDay.removeSlot();
+
+
 
     }
 }

@@ -13,12 +13,15 @@ public class TimeSlot implements Slot {
     LocalTime start;
     long totalMinutes;
 
+
     public TimeSlot(LocalTime start, LocalTime end){
         setStart(start);
         setEnd(end);
+        setTotalMinutes(start, end);
     }
     public TimeSlot(LocalTime start, LocalTime end, String description) {
-       this(start,end);
+        setStart(start);
+        setEnd(end);
         setDescription(description);
     }
 
@@ -69,6 +72,10 @@ public class TimeSlot implements Slot {
         return totalMinutes = ChronoUnit.MINUTES.between(start,end);
 
     }
+    public void setTotalMinutes(LocalTime start, LocalTime end){
+        this.totalMinutes = ChronoUnit.MINUTES.between(start,end);
+
+    }
 
     @Override
     public void printSlotInfo() {
@@ -102,12 +109,11 @@ public class TimeSlot implements Slot {
 
     @Override
     public String toString() {
-        return "TimeSlot{" +
-                "description='" + description + '\'' +
-                ", minutesByType=" + Arrays.toString(minutesByType) +
-                ", end=" + end +
-                ", start=" + start +
-                ", totalMinutes=" + totalMinutes +
-                '}';
+        return "TimeSlot: "  +
+                "Description: '" + description + '\'' +
+                ", MinutesByType: " + Arrays.toString(minutesByType) +
+                ", Start: " + start +
+                ", End: " + end +
+                ", Total minutes: " + totalMinutes;
     }
 }
