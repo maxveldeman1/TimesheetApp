@@ -1,4 +1,4 @@
-package be.vDAB.timeSheetApp;
+package be.vDAB.timeSheetApp.menu;
 
 import be.vDAB.timeSheetApp.utility.Keyboard;
 
@@ -8,7 +8,7 @@ public class Menu {
     Scanner keyboard = new Scanner(System.in);
 
     public void runMenu() {
-        System.out.println("Werlcome to our Time Sheet App" + "\n"+
+        System.out.println("Welcome to our Time Sheet App" + "\n"+
                 "We are booting up the system for you" +"\n"+
                 ".   .   . Done" +"\n"+
                 "+++++   =====   +++++" +"\n"+

@@ -1,16 +1,16 @@
 package be.vDAB.timeSheetApp;
 
-import be.vDAB.timeSheetApp.slots.BreakSlot;
-import be.vDAB.timeSheetApp.slots.TimeSlot;
-import be.vDAB.timeSheetApp.utility.AskTime;
-import be.vDAB.timeSheetApp.utility.Processor;
+import be.vDAB.timeSheetApp.days.Day;
+import be.vDAB.timeSheetApp.days.WorkedDay;
+import be.vDAB.timeSheetApp.menu.Menu;
+import be.vDAB.timeSheetApp.weeks.WorkedWeek;
 
-import java.time.LocalTime;
+import java.time.DayOfWeek;
 
 public class Main {
     public static void main(String[] args) {
-    Menu menu = new Menu();
-    menu.runMenu();
+        WorkedDay workedDay= new WorkedDay();
+        workedDay.getWorkedDay();
     }
 
 }

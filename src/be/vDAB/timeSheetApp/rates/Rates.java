@@ -1,4 +1,4 @@
-package be.vDAB.timeSheetApp;
+package be.vDAB.timeSheetApp.rates;
 
 public enum Rates {
     MON(true),
