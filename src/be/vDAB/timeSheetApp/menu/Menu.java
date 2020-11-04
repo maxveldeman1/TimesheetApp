@@ -6,11 +6,12 @@ import java.util.Scanner;
 
 public class Menu {
     Scanner keyboard = new Scanner(System.in);
-
+//opsplisten: askmenu, bootup menu, endmenu
     public void runMenu() {
         System.out.println("Welcome to our Time Sheet App" + "\n"+
                 "We are booting up the system for you" +"\n"+
                 ".   .   . Done" +"\n"+
+//                = bootup menu
                 "+++++   =====   +++++" +"\n"+
                 "+++++   =====   +++++" +"\n"+
                 "What do you want to do?" +"\n"+
@@ -22,7 +23,9 @@ public class Menu {
                 "5. Reset." +"\n"+
                 "6. Print PayCheck." +"\n"+
                 "7. Print Detailed PayCheck." +"\n"+
+//                askmenu
                 "8. Quit Application." +"\n"+
+//                endmenu
                 "Your Choice: ");
 
     }

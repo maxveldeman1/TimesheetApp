@@ -28,45 +28,48 @@ public class WorkedDay implements Day {
         this.date = date;
     }
 
-    public void setDayOfWorkweek(DayOfWeek dayOfWorkWeek){
-//        welke dag wil je wijzigen? => keuze gebruiker => dat wordt onze workedday
-//        eerst checken of werkweek null is? indien null => eerst werkweek laten invullen
-//        if checkWorkedweek is filled in = true dan workedDay laten lopen, if is false dan automatisch naar
-//        setworkweek
-        System.out.println("We gaan checken ");
-        if (!isCheckWorkWeekIsFilledIn()){
-            System.out.println("You haven't started a work week yet, please fill this in first.");
-          // return to menu.
-        }
-        int cijferVanDag =keyboard.askForInt("Welke dag wilt u wijzigen van uw werkweek?(Geef het cijfer van de dag)");
-        if (cijferVanDag > 7 || cijferVanDag <= 0) {
-            System.out.println("Kies een nummer van 1 tot 7");
-            setDayOfWorkweek(dayOfWorkWeek);
-        }
-        System.out.println("U heeft " +workweek[cijferVanDag-1] +" gekozen.");
-        this.dayOfWorkWeek = workweek[cijferVanDag-1];
+//    public void setDayOfWorkweek(DayOfWeek dayOfWorkWeek){
+////        welke dag wil je wijzigen? => keuze gebruiker => dat wordt onze workedday
+////        eerst checken of werkweek null is? indien null => eerst werkweek laten invullen
+////        if checkWorkedweek is filled in = true dan workedDay laten lopen, if is false dan automatisch naar
+////        setworkweek
+//        System.out.println("We gaan checken ");
+//        if (!isCheckWorkWeekIsFilledIn()){
+//            System.out.println("You haven't started a work week yet, please fill this in first.");
+//          // return to menu.
+//        }
+//        int cijferVanDag =keyboard.askForInt("Welke dag wilt u wijzigen van uw werkweek?(Geef het cijfer van de dag)");
+//        if (cijferVanDag > 7 || cijferVanDag <= 0) {
+//            System.out.println("Kies een nummer van 1 tot 7");
+//            setDayOfWorkweek(dayOfWorkWeek);
+//        }
+//        System.out.println("U heeft " +workweek[cijferVanDag-1] +" gekozen.");
+//        this.dayOfWorkWeek = workweek[cijferVanDag-1];
+//
+//
+//    }
 
-
-    }
-
-    public DayOfWeek getDayOfWorkWeek() {
-        return dayOfWorkWeek;
-    }
+//    public DayOfWeek getDayOfWorkWeek() {
+//        return dayOfWorkWeek;
+//    }
 
     @Override
     public void addSlot() {
         if (findEmptyPlaceInTimeSlots() < timeSlots.length) {
             int choice = getChoiceForSlot("What do you want to add:" + "\n" + "1. Work moment." + "\n" + "2. Break moment." + "\n" + "----------------");
-            setDayOfWorkweek(dayOfWorkWeek);
+
+//
+
             if (choice == 1) {
-                System.out.println("Adding a new Work moment on " + getDayOfWorkWeek());
+                System.out.println("Adding a new Timeslot moment on " + date.getDayOfWeek());
                 TimeSlot timeSlot = new TimeSlot();
                 timeSlot.setDescription(keyboard.askForText("Name your timeslot:"));
                 timeSlots[findEmptyPlaceInTimeSlots()] = timeSlot;
                }
             if (choice == 2) {
-                System.out.println("Adding a new Break moment on " + getDayOfWorkWeek());
+                System.out.println("Adding a new Break moment on " + date.getDayOfWeek());
                 BreakSlot breakSlot = new BreakSlot();
+                breakSlot.setDescription(keyboard.askForText("Name your breakslot:"));
                 timeSlots[findEmptyPlaceInTimeSlots()] = breakSlot;
             }
         } else{

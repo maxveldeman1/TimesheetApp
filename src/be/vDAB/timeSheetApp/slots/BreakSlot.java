@@ -38,7 +38,7 @@ public class BreakSlot implements Slot {
     }
     public LocalTime inputSlot() {
         AskTime askTime = new AskTime();
-        LocalTime time = askTime.getLocalTime("Give your  time");
+        LocalTime time = askTime.getLocalTime("Give your time:");
 //        LocalTime eindtijd = askTime.getLocalTime("Give your ending time");
 
         return time;
