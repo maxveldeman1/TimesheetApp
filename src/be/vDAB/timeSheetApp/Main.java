@@ -13,7 +13,8 @@ public class Main {
 WorkedDay workedDay = new WorkedDay();
 workedDay.addSlot();
 workedDay.addSlot();
-workedDay.removeSlot();
+
+workedDay.printArrayOfSlotsWithoutNull();
 
 
 

@@ -14,6 +14,9 @@ public class TimeSlot implements Slot {
     long totalMinutes;
 
 
+    public TimeSlot(){
+        beginEnEindtijdBepalen();
+    }
     public TimeSlot(LocalTime start, LocalTime end){
         setStart(start);
         setEnd(end);
@@ -80,6 +83,27 @@ public class TimeSlot implements Slot {
     @Override
     public void printSlotInfo() {
 
+
+
+    }
+    private void beginEnEindtijdBepalen() {
+        start = inputSlot();
+        end = inputSlot();
+        checkIfEndhourIsBeforeStarttime();
+    }
+
+    private void checkIfEndhourIsBeforeStarttime() {
+        if (end.isBefore(start)) {
+            System.out.println("Please make sure your ending time is not before your starting time."+ "\n"+"If your work time is spread across two days, make 2 separate time slots.");
+            beginEnEindtijdBepalen();
+        }
+    }
+    public LocalTime inputSlot() {
+        AskTime askTime = new AskTime();
+        LocalTime time = askTime.getLocalTime("Give your  time");
+//        LocalTime eindtijd = askTime.getLocalTime("Give your ending time");
+
+        return time;
     }
 
     @Override

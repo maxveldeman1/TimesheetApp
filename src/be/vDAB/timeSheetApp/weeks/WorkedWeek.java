@@ -1,13 +1,15 @@
 package be.vDAB.timeSheetApp.weeks;
 
+import be.vDAB.timeSheetApp.days.WorkedDay;
 import be.vDAB.timeSheetApp.utility.Keyboard;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 public class WorkedWeek implements Week {
 
-    public DayOfWeek firstDayOfWeek;
-    public DayOfWeek[] workweek = new DayOfWeek[7];
+    public LocalDate firstDayOfWeek;
+    public WorkedDay[] workweek = new WorkedDay[7];
 
     public void setFirstDayOfWeek() {
         Keyboard keyboard = new Keyboard();
@@ -21,15 +23,16 @@ public class WorkedWeek implements Week {
             setFirstDayOfWeek();
 
         }
-        else {firstDayOfWeek = DayOfWeek.of(numberOfDay);}
+        else {
+            firstDayOfWeek = LocalDate.of()}
         System.out.println("Uw eerste dag van de week is: " + firstDayOfWeek);
     }
 
-    public DayOfWeek getFirstDayOfWeek() {
+    public LocalDate getFirstDayOfWeek() {
         return firstDayOfWeek;
     }
 
-    public DayOfWeek[] getWorkweek() {
+    public WorkedDay[] getWorkweek() {
         return workweek;
     }
 

@@ -12,6 +12,9 @@ public class BreakSlot implements Slot {
     LocalTime start;
     long totalMinutes;
 
+   public BreakSlot() {
+       beginEnEindtijdBepalen();
+   }
     public BreakSlot(LocalTime start, LocalTime end) {
     setEnd(end);
     setStart(start);
@@ -20,6 +23,25 @@ public class BreakSlot implements Slot {
     public BreakSlot(LocalTime start,LocalTime end, String description) {
     this(start, end);
     setDescription(description);
+    }
+    private void beginEnEindtijdBepalen() {
+        start = inputSlot();
+        end = inputSlot();
+        checkIfEndhourIsBeforeStarttime();
+    }
+
+    private void checkIfEndhourIsBeforeStarttime() {
+        if (end.isBefore(start)) {
+            System.out.println("Please make sure your ending time is not before your starting time."+ "\n"+"If your work time is spread across two days, make 2 separate time slots.");
+            beginEnEindtijdBepalen();
+        }
+    }
+    public LocalTime inputSlot() {
+        AskTime askTime = new AskTime();
+        LocalTime time = askTime.getLocalTime("Give your  time");
+//        LocalTime eindtijd = askTime.getLocalTime("Give your ending time");
+
+        return time;
     }
 
 

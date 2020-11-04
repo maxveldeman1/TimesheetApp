@@ -5,32 +5,27 @@ import be.vDAB.timeSheetApp.slots.Slot;
 import be.vDAB.timeSheetApp.slots.TimeSlot;
 import be.vDAB.timeSheetApp.utility.AskTime;
 import be.vDAB.timeSheetApp.utility.Keyboard;
-import be.vDAB.timeSheetApp.weeks.WorkedWeek;
-import org.w3c.dom.ls.LSOutput;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Scanner;
 
-public class WorkedDay extends WorkedWeek implements Day {
+public class WorkedDay implements Day {
     long[] minutesByType;
-    DayOfWeek hourlyRate;
+
+
+
     LocalDate date;
-    int numberOfTimeSlots;
-    Slot[] timeSlots = new Slot[numberOfTimeSlots+1];
+    Slot[] timeSlots = new Slot[50];
     Keyboard keyboard = new Keyboard();
     DayOfWeek dayOfWorkWeek;
-    LocalTime begintijd;
-    LocalTime eindtijd;
+    int numberOfTimeSlots =0;
 
-
-    public int getNumberOfTimeSlots() {
-        return numberOfTimeSlots;
+    public WorkedDay(LocalDate date) {
+    setDate(date);
     }
-
-    public void setNumberOfTimeSlots(int numberOfTimeSlots) {
-        this.numberOfTimeSlots = numberOfTimeSlots;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public void setDayOfWorkweek(DayOfWeek dayOfWorkWeek){
@@ -40,9 +35,8 @@ public class WorkedDay extends WorkedWeek implements Day {
 //        setworkweek
         System.out.println("We gaan checken ");
         if (!isCheckWorkWeekIsFilledIn()){
-            System.out.println("Geef eerst uw begindag van uw werkweek in.");
-            setFirstDayOfWeek();
-            setWorkweek(workweek);
+            System.out.println("You haven't started a work week yet, please fill this in first.");
+          // return to menu.
         }
         int cijferVanDag =keyboard.askForInt("Welke dag wilt u wijzigen van uw werkweek?(Geef het cijfer van de dag)");
         if (cijferVanDag > 7 || cijferVanDag <= 0) {
@@ -61,45 +55,34 @@ public class WorkedDay extends WorkedWeek implements Day {
 
     @Override
     public void addSlot() {
-        numberOfTimeSlots++;
+        if (findEmptyPlaceInTimeSlots() < timeSlots.length) {
             int choice = getChoiceForSlot("What do you want to add:" + "\n" + "1. Work moment." + "\n" + "2. Break moment." + "\n" + "----------------");
             setDayOfWorkweek(dayOfWorkWeek);
-
             if (choice == 1) {
                 System.out.println("Adding a new Work moment on " + getDayOfWorkWeek());
-
-                zoveelsteMethode();
-
-                TimeSlot timeSlot = new TimeSlot(begintijd, eindtijd);
+                TimeSlot timeSlot = new TimeSlot();
                 timeSlot.setDescription(keyboard.askForText("Name your timeslot:"));
-
-                timeSlots[numberOfTimeSlots] = timeSlot;
-
-
-
-            }
+                timeSlots[findEmptyPlaceInTimeSlots()] = timeSlot;
+               }
             if (choice == 2) {
                 System.out.println("Adding a new Break moment on " + getDayOfWorkWeek());
-                inputSlot();
-                BreakSlot breakSlot = new BreakSlot(begintijd, eindtijd);
-                timeSlots[numberOfTimeSlots] = breakSlot;
+                BreakSlot breakSlot = new BreakSlot();
+                timeSlots[findEmptyPlaceInTimeSlots()] = breakSlot;
             }
-
-
-        }
-
-    private void zoveelsteMethode() {
-        begintijd = inputSlot();
-        eindtijd = inputSlot();
-        checkIfEndhourIsBeforeStarttime();
-    }
-
-    private void checkIfEndhourIsBeforeStarttime() {
-        if (eindtijd.isBefore(begintijd)) {
-            System.out.println("Please make sure your ending time is not before your starting time."+ "\n"+"If your work time is spread across two days, make 2 separate time slots.");
-            zoveelsteMethode();
+        } else{
+            System.out.println("Memory full, please remove a time slot first.");
         }
     }
+
+    public void printArrayOfSlotsWithoutNull() {
+        for( Slot ts : timeSlots) {
+            if (ts != null) {
+                System.out.println(ts);
+            }
+        }
+    }
+
+
 
 
     private int getChoiceForSlot(String text) {
@@ -111,23 +94,16 @@ public class WorkedDay extends WorkedWeek implements Day {
         return choice;
     }
 
-//    private int findEmptyPlaceInTimeSlots() {
-//        for (int i = 0; i < timeSlots.length; i++){
-//            if (timeSlots[i] == null){
-//               return i;
-//            }
-//        }
-//
-//        return numberOfTimeSlots+1;
-//    }
-
-    public LocalTime inputSlot() {
-        AskTime askTime = new AskTime();
-       LocalTime time = askTime.getLocalTime("Give your  time");
-//        LocalTime eindtijd = askTime.getLocalTime("Give your ending time");
-
-        return time;
+    private int findEmptyPlaceInTimeSlots() {
+        for (int i = 0; i < timeSlots.length; i++){
+            if (timeSlots[i] == null){
+               return i;
+            }
+        }
+        return 51;
     }
+
+
 
     @Override
     public void removeSlot() {
