@@ -8,15 +8,21 @@ import java.util.Arrays;
 
 public class TimeSlot implements Slot {
     String description;
-    long[] minutesByType;
+    long[] minutesByType = new long[2];
     LocalTime end;
     LocalTime start;
     long totalMinutes;
+    boolean isNormalHour;
+    final LocalTime START_NORMAL_HOURS = LocalTime.of(8,0);
+    final LocalTime END_NORMAL_HOURS = LocalTime.of(18,0);
+    long overUren;
+    long normaleUren;
 
 
     public TimeSlot(){
         beginEnEindtijdBepalen();
         setTotalMinutes(start,end);
+        setMinutesByType(start,end);
     }
     public TimeSlot(LocalTime start, LocalTime end){
         this();
@@ -54,14 +60,8 @@ public class TimeSlot implements Slot {
         return description;
     }
 
-    /**
-     * Implementatie met Rates per minuut.
-     * @param minutesByType
-     */
-    @Override
-    public void setMinutesByType(long[] minutesByType) {
 
-    }
+
 
     @Override
     public void setEnd(LocalTime end) {
@@ -95,7 +95,39 @@ public class TimeSlot implements Slot {
         this.totalMinutes = ChronoUnit.MINUTES.between(start,end);
 
     }
+    @Override
+    public void setMinutesByType(LocalTime start,LocalTime end) {
+      if(start.isBefore(START_NORMAL_HOURS) && end.isBefore(START_NORMAL_HOURS)) {
+          overUren=ChronoUnit.MINUTES.between(start,end);
+          minutesByType[0] = overUren;
+      } else if (start.isBefore(START_NORMAL_HOURS) && (end.isAfter(START_NORMAL_HOURS) && end.isBefore(END_NORMAL_HOURS))) {
+          overUren =   ChronoUnit.MINUTES.between(start, START_NORMAL_HOURS);
+          normaleUren = ChronoUnit.MINUTES.between(START_NORMAL_HOURS, end);
+          minutesByType[0] = overUren;
+          minutesByType[1] = normaleUren;
+      } else if(start.isAfter(START_NORMAL_HOURS) && end.isBefore(END_NORMAL_HOURS)){
+          normaleUren =ChronoUnit.MINUTES.between(start,end);
+          minutesByType[1] = normaleUren;
+      } else if ((start.isAfter(START_NORMAL_HOURS) && start.isBefore(END_NORMAL_HOURS))&& end.isAfter(END_NORMAL_HOURS)) {
+          normaleUren = ChronoUnit.MINUTES.between(start, END_NORMAL_HOURS);
+          overUren = ChronoUnit.MINUTES.between(END_NORMAL_HOURS, end);
+          minutesByType[0] = overUren;
+          minutesByType[1] = normaleUren;
+      } else if(start.isAfter(END_NORMAL_HOURS )&& end.isAfter(END_NORMAL_HOURS)) {
+          overUren = ChronoUnit.MINUTES.between(start,end);
+          minutesByType[0]= overUren;
+      } else if(start.isBefore(START_NORMAL_HOURS) && end.isAfter(END_NORMAL_HOURS)) {
+          overUren = ChronoUnit.MINUTES.between(start,START_NORMAL_HOURS)+ChronoUnit.MINUTES.between(END_NORMAL_HOURS,end);
+      }
 
+
+
+
+
+
+
+
+    }
     @Override
     public void printSlotInfo() {
 

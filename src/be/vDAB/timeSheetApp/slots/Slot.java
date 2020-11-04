@@ -8,7 +8,7 @@ public interface Slot {
     void setDescription(String description);
     String getDescription();
 
-    void setMinutesByType(long[] minutesByType);
+    void setMinutesByType(LocalTime start,LocalTime end);
 
     void setEnd(LocalTime end);
     LocalTime getEnd();

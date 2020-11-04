@@ -59,7 +59,7 @@ public class BreakSlot implements Slot {
     }
 
     @Override
-    public void setMinutesByType(long[] minutesByType) {
+    public void setMinutesByType(LocalTime start, LocalTime end) {
 
     }
 

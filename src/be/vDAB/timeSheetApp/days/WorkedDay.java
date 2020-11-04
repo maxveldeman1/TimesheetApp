@@ -24,39 +24,13 @@ public class WorkedDay implements Day {
     }
 
 
-    public void initialiseWorkedDay() {
-
-    }
 
 
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-//    public void setDayOfWorkweek(DayOfWeek dayOfWorkWeek){
-////        welke dag wil je wijzigen? => keuze gebruiker => dat wordt onze workedday
-////        eerst checken of werkweek null is? indien null => eerst werkweek laten invullen
-////        if checkWorkedweek is filled in = true dan workedDay laten lopen, if is false dan automatisch naar
-////        setworkweek
-//        System.out.println("We gaan checken ");
-//        if (!isCheckWorkWeekIsFilledIn()){
-//            System.out.println("You haven't started a work week yet, please fill this in first.");
-//          // return to menu.
-//        }
-//        int cijferVanDag =keyboard.askForInt("Welke dag wilt u wijzigen van uw werkweek?(Geef het cijfer van de dag)");
-//        if (cijferVanDag > 7 || cijferVanDag <= 0) {
-//            System.out.println("Kies een nummer van 1 tot 7");
-//            setDayOfWorkweek(dayOfWorkWeek);
-//        }
-//        System.out.println("U heeft " +workweek[cijferVanDag-1] +" gekozen.");
-//        this.dayOfWorkWeek = workweek[cijferVanDag-1];
-//
-//
-//    }
 
-//    public DayOfWeek getDayOfWorkWeek() {
-//        return dayOfWorkWeek;
-//    }
 
     @Override
     public void addSlot() {
