@@ -1,6 +1,5 @@
 package be.vDAB.timeSheetApp.slots;
 
-import be.vDAB.timeSheetApp.utility.AskTime;
 
 import java.time.LocalTime;
 

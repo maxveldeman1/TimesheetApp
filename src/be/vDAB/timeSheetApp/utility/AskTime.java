@@ -2,12 +2,10 @@ package be.vDAB.timeSheetApp.utility;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalField;
-import java.time.temporal.TemporalUnit;
-import java.util.Scanner;
 
-public class AskTime implements Temporal {
+
+
+public class AskTime  {
     private LocalTime userInputTime;
     Keyboard keyboard = new Keyboard();
     private String hours;
@@ -19,7 +17,7 @@ public class AskTime implements Temporal {
 
 /** Dit is een methode waarbij we een uur van de klant opvragen */
     public String askTimeHours() {
-        hours = keyboard.askForText("Wat is het uur?");
+        hours = keyboard.askForText("What is the hour?");
         controlTimeHours(hours);
         return hours;
 
@@ -37,7 +35,7 @@ public class AskTime implements Temporal {
 
     }
     public String askMinutes () {
-        minutes = keyboard.askForText("Wat zijn de minuten?");
+        minutes = keyboard.askForText("What are the minutes?");
         controlTimeMinutes(minutes);
         return minutes;
     }
@@ -64,34 +62,4 @@ public class AskTime implements Temporal {
 
     }
 
-
-    @Override
-    public boolean isSupported(TemporalUnit unit) {
-        return false;
-    }
-
-    @Override
-    public Temporal with(TemporalField field, long newValue) {
-        return null;
-    }
-
-    @Override
-    public Temporal plus(long amountToAdd, TemporalUnit unit) {
-        return null;
-    }
-
-    @Override
-    public long until(Temporal endExclusive, TemporalUnit unit) {
-        return 0;
-    }
-
-    @Override
-    public boolean isSupported(TemporalField field) {
-        return false;
-    }
-
-    @Override
-    public long getLong(TemporalField field) {
-        return 0;
-    }
 }

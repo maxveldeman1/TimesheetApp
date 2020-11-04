@@ -16,10 +16,10 @@ public class TimeSlot implements Slot {
 
     public TimeSlot(){
         beginEnEindtijdBepalen();
+        setTotalMinutes(start,end);
     }
     public TimeSlot(LocalTime start, LocalTime end){
-        setStart(start);
-        setEnd(end);
+        this();
         setTotalMinutes(start, end);
     }
     public TimeSlot(LocalTime start, LocalTime end, String description) {
@@ -27,7 +27,23 @@ public class TimeSlot implements Slot {
         setEnd(end);
         setDescription(description);
     }
+    private void beginEnEindtijdBepalen() {
+        start = inputSlot("Give your starting time.");
+        end = inputSlot("Give your ending time");
+        checkIfEndhourIsBeforeStarttime();
+    }
 
+    private void checkIfEndhourIsBeforeStarttime() {
+        if (end.isBefore(start)) {
+            System.out.println("Please make sure your ending time is not before your starting time."+ "\n"+"If your work time is spread across two days, make 2 separate time slots.");
+            beginEnEindtijdBepalen();
+        }
+    }
+    public LocalTime inputSlot(String text) {
+        AskTime askTime = new AskTime();
+        LocalTime time = askTime.getLocalTime(text);
+        return time;
+    }
     @Override
     public void setDescription(String description) {
         this.description = description;
@@ -86,25 +102,7 @@ public class TimeSlot implements Slot {
 
 
     }
-    private void beginEnEindtijdBepalen() {
-        start = inputSlot();
-        end = inputSlot();
-        checkIfEndhourIsBeforeStarttime();
-    }
 
-    private void checkIfEndhourIsBeforeStarttime() {
-        if (end.isBefore(start)) {
-            System.out.println("Please make sure your ending time is not before your starting time."+ "\n"+"If your work time is spread across two days, make 2 separate time slots.");
-            beginEnEindtijdBepalen();
-        }
-    }
-    public LocalTime inputSlot() {
-        AskTime askTime = new AskTime();
-        LocalTime time = askTime.getLocalTime("Give your  time");
-//        LocalTime eindtijd = askTime.getLocalTime("Give your ending time");
-
-        return time;
-    }
 
     @Override
     public boolean equals(Object o) {

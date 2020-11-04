@@ -27,31 +27,19 @@ public enum Rates {
         return overtimeHourlyRate;
     }
 
-    public void setOvertimeHourlyRate(double overtimeHourlyRate) {
-        this.overtimeHourlyRate = overtimeHourlyRate;
-    }
 
     public double getNormalHourlyRate() {
         return normalHourlyRate;
     }
 
-    public void setNormalHourlyRate(double normalHourlyRate) {
-        this.normalHourlyRate = normalHourlyRate;
-    }
 
     public double getSaturdayHourlyRate() {
         return saturdayHourlyRate;
     }
 
-    public void setSaturdayHourlyRate(double saturdayHourlyRate) {
-        this.saturdayHourlyRate = saturdayHourlyRate;
-    }
 
     public double getSundayHourlyRate() {
         return sundayHourlyRate;
     }
 
-    public void setSundayHourlyRate(double sundayHourlyRate) {
-        this.sundayHourlyRate = sundayHourlyRate;
-    }
 }

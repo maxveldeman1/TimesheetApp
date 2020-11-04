@@ -1,12 +1,5 @@
 package be.vDAB.timeSheetApp.utility;
 
-import be.vDAB.timeSheetApp.slots.BreakSlot;
-import be.vDAB.timeSheetApp.slots.Slot;
-import be.vDAB.timeSheetApp.slots.TimeSlot;
-
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
 
 /**
  * Dit zet minuten om naar de decimale vorm en omgekeerd.

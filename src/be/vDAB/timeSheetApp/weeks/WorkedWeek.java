@@ -5,31 +5,47 @@ import be.vDAB.timeSheetApp.utility.Keyboard;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
 
 public class WorkedWeek implements Week {
 
     public LocalDate firstDayOfWeek;
     public WorkedDay[] workweek = new WorkedDay[7];
+    public boolean isInitialised;
 
+    public void initialiseWorkweek(){
+        System.out.println("Starting a new workweek");
+        System.out.println("---------------------------");
+        System.out.println("Give you starting date.");
+        setFirstDayOfWeek();
+
+        setWorkweek();
+        isInitialised = true;
+    }
+
+    @Override
     public void setFirstDayOfWeek() {
         Keyboard keyboard = new Keyboard();
-//        int count = 1;
-//        for (DayOfWeek d : DayOfWeek.values()) {
-//            System.out.format("%d. %s %n", count++, d);
-//        }
-//        int numberOfDay = keyboard.askForInt("Kies de begindag van uw werkweek:");
-//        if (numberOfDay > 7 || numberOfDay <= 0) {
-//            System.out.println("Kies een nummer van 1 tot 7");
-//            setFirstDayOfWeek();
-//
-//        }
-//        else {
-            int jaar = keyboard.askForInt("Give a year: ");
-            int maand = keyboard.askForInt("Give a month: ");
-            int dag = keyboard.askForInt("Give a day: ");
-            firstDayOfWeek = LocalDate.of(jaar, maand, dag);
-        System.out.println("Uw eerste dag van de week is: " + firstDayOfWeek);
+        int jaar = keyboard.askForInt("Give the year: ");
+        while(jaar <2020) {
+            System.out.println("Can not go in to the previous years");
+            jaar = keyboard.askForInt("Give the year:");
+        }
+        int maand = keyboard.askForInt("Give the month: ");
+        while(maand >12 || maand <1) {
+            System.out.println("A years only has 12 months.");
+            maand = keyboard.askForInt("Give the month:");
+        }
+        int dag = keyboard.askForInt("Give the day: ");
+        while(dag > Month.of(maand).length(Year.isLeap(jaar)) || dag <1) {
+            System.out.printf("%s has between 1 and %d days %n",Month.of(maand),Month.of(maand).length(Year.isLeap(jaar)));
+            jaar = keyboard.askForInt("Give the day:");
+        }
+        firstDayOfWeek = LocalDate.of(jaar, maand, dag);
+        System.out.println("Uw eerste dag van de week is: " +firstDayOfWeek);
     }
+
 
     public LocalDate getFirstDayOfWeek() {
         return firstDayOfWeek;
@@ -39,29 +55,30 @@ public class WorkedWeek implements Week {
         return workweek;
     }
 
+
     public void setWorkweek() {
         System.out.println("Dit is uw werkweek:");
         for (int i = 0; i <= DayOfWeek.values().length - 1; i++) {
             WorkedDay workedDay = new WorkedDay(firstDayOfWeek.plusDays(i));
             workweek[i] = workedDay;
             System.out.println((i+1) +". " +workweek[i]);
-
             }
+        System.out.println("");
+        System.out.println("Returning to menu");
+
 
         }
-        public void InitialiseWorkweek (){
-        setFirstDayOfWeek();
-        setWorkweek();
+        public void resetWorkWeek() {
+            firstDayOfWeek = null;
+            for (int i = 0; i <= DayOfWeek.values().length - 1; i++) {
+                workweek[i] = null;
+            }
+            System.out.println("Your workweek has been reset.");
+            System.out.println("");
+            System.out.println("Returning to menu");
+            isInitialised =false;
         }
 
-//    public boolean isCheckWorkWeekIsFilledIn() {
-//    for (DayOfWeek workedWeek: workweek){
-//        if (workedWeek != null) {
-//            return true;
-//        }
-//    }
-//        return false;
-//    }
 }
 
 
