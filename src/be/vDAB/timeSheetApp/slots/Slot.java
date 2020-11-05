@@ -1,6 +1,7 @@
 package be.vDAB.timeSheetApp.slots;
 
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 public interface Slot {
@@ -9,11 +10,13 @@ public interface Slot {
     String getDescription();
 
     void setMinutesByType(LocalTime start,LocalTime end);
-
+    long[] getMinutesByType();
+    boolean isWorkslot();
     void setEnd(LocalTime end);
     LocalTime getEnd();
 
     void setStart(LocalTime start);
+    LocalDate getDate();
 
     LocalTime getStart();
 

@@ -6,7 +6,7 @@ public interface Day {
 
     void addSlot();
 
-    long totalWorkedMinutes();
+
 
     void setMinutesByType(long[] minutesByType);
 

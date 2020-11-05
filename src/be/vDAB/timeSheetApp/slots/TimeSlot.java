@@ -1,7 +1,10 @@
 package be.vDAB.timeSheetApp.slots;
 
+import be.vDAB.timeSheetApp.rates.Rates;
 import be.vDAB.timeSheetApp.utility.AskTime;
+import be.vDAB.timeSheetApp.utility.Processor;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -12,26 +15,40 @@ public class TimeSlot implements Slot {
     LocalTime end;
     LocalTime start;
     long totalMinutes;
-    boolean isNormalHour;
     final LocalTime START_NORMAL_HOURS = LocalTime.of(8,0);
     final LocalTime END_NORMAL_HOURS = LocalTime.of(18,0);
     long overUren;
     long normaleUren;
+    Processor processor = new Processor();
+    LocalDate date;
+    double overtimeHourlyRate;
+    double normalHourlyRate;
 
 
-    public TimeSlot(){
+
+
+
+    public TimeSlot(LocalDate date){
         beginEnEindtijdBepalen();
         setTotalMinutes(start,end);
         setMinutesByType(start,end);
+        setDayOfWeek(date);
+        setNormalHourlyRate(date);
+        setOvertimeHourlyRate(date);
     }
-    public TimeSlot(LocalTime start, LocalTime end){
-        this();
-        setTotalMinutes(start, end);
-    }
+
     public TimeSlot(LocalTime start, LocalTime end, String description) {
         setStart(start);
         setEnd(end);
         setDescription(description);
+    }
+    @Override
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDayOfWeek(LocalDate dayOfWeek) {
+        this.date = dayOfWeek;
     }
     private void beginEnEindtijdBepalen() {
         start = inputSlot("Give your starting time.");
@@ -41,7 +58,7 @@ public class TimeSlot implements Slot {
 
     private void checkIfEndhourIsBeforeStarttime() {
         if (end.isBefore(start)) {
-            System.out.println("Please make sure your ending time is not before your starting time."+ "\n"+"If your work time is spread across two days, make 2 separate time slots.");
+            System.out.println("Please make sure your ending time is not before your starting time."+ "\n"+"If your work time is spread across two days,\nmake 2 separate time slots split across the different days. .");
             beginEnEindtijdBepalen();
         }
     }
@@ -77,6 +94,8 @@ public class TimeSlot implements Slot {
     @Override
     public void setStart(LocalTime start) {
         this.start= start;
+
+
 
 
     }
@@ -118,22 +137,45 @@ public class TimeSlot implements Slot {
           minutesByType[0]= overUren;
       } else if(start.isBefore(START_NORMAL_HOURS) && end.isAfter(END_NORMAL_HOURS)) {
           overUren = ChronoUnit.MINUTES.between(start,START_NORMAL_HOURS)+ChronoUnit.MINUTES.between(END_NORMAL_HOURS,end);
+          normaleUren = ChronoUnit.MINUTES.between(START_NORMAL_HOURS,END_NORMAL_HOURS);
+          minutesByType[0] = overUren;
+          minutesByType[1]= normaleUren;
       }
-
-
-
-
-
-
 
 
     }
     @Override
+    public long[] getMinutesByType(){
+        return minutesByType;
+    }
+
+    @Override
+    public boolean isWorkslot() {
+        return true;
+    }
+
+    @Override
     public void printSlotInfo() {
 
-
-
     }
+
+    public double getNormalHourlyRate() {
+        return normalHourlyRate;
+    }
+
+    public void setNormalHourlyRate(LocalDate date) {
+        this.normalHourlyRate = Rates.valueOf(date.getDayOfWeek().toString()).getNormalHourlyRate();
+    }
+
+    public double getOvertimeHourlyRate() {
+        return overtimeHourlyRate;
+    }
+
+    public void setOvertimeHourlyRate(LocalDate date) {
+        this.overtimeHourlyRate = Rates.valueOf(date.getDayOfWeek().toString()).getOvertimeHourlyRate();
+    }
+
+
 
 
     @Override
@@ -163,11 +205,11 @@ public class TimeSlot implements Slot {
 
     @Override
     public String toString() {
-        return "TimeSlot: "  +
+        return "Work slot: "  +
                 "Description: '" + description + '\'' +
-                ", MinutesByType: " + Arrays.toString(minutesByType) +
+                ", Hours: Extra Hours ("+ String.format("%.2f",overtimeHourlyRate)+ " euro/h): " + String.format("%.2f",processor.goFromMinutesToHours(minutesByType[0])) +" h, Normal hours ("+ String.format("%.2f",normalHourlyRate) + "euro/h): " +String.format("%.2f",processor.goFromMinutesToHours(minutesByType[1]))+"h"+
                 ", Start: " + start +
                 ", End: " + end +
-                ", Total minutes: " + totalMinutes;
+                ", Total: " + totalMinutes+ "min or " +String.format("%.2f",processor.goFromMinutesToHours(totalMinutes))+"h.";
     }
 }

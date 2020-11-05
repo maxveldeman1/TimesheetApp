@@ -18,6 +18,7 @@ public class Main {
         Menu menu = new Menu();
         menu.bootUpMenu();
         menu.askMenu();
+        menu.endMenu();
     }
 
     }

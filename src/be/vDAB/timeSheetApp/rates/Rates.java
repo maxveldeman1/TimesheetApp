@@ -1,26 +1,36 @@
 package be.vDAB.timeSheetApp.rates;
 
 public enum Rates {
-    MON(true),
-    TUE(true),
-    WED(true),
-    FRI(true),
-    SAT(false),
-    SUN(false);
+    MONDAY(20,15,1),
+    TUESDAY(20,15,2),
+    WEDNESDAY(20,15,3),
+    THURSDAY(20,15,4),
+    FRIDAY(20,15,5),
+    SATURDAY(25,25,6),
+    SUNDAY(35,35,7);
 
     double overtimeHourlyRate = 20;
     double normalHourlyRate =15;
-    double saturdayHourlyRate =25;
-    double sundayHourlyRate = 35;
 
-    private boolean weekday;
 
-    Rates(boolean weekday) {
-        this.weekday = weekday;
+    int dayOfWeek;
+
+    Rates(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+    Rates(double overtimeHourlyRate,double normalHourlyRate, int dayOfWeek){
+        this(dayOfWeek);
+        this.normalHourlyRate = normalHourlyRate;
+        this.overtimeHourlyRate = overtimeHourlyRate;
+
     }
 
-    public boolean isWeekday() {
-        return weekday;
+    public int getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public double getOvertimeHourlyRate() {
@@ -33,13 +43,5 @@ public enum Rates {
     }
 
 
-    public double getSaturdayHourlyRate() {
-        return saturdayHourlyRate;
-    }
-
-
-    public double getSundayHourlyRate() {
-        return sundayHourlyRate;
-    }
 
 }

@@ -1,33 +1,50 @@
 package be.vDAB.timeSheetApp.slots;
 
+import be.vDAB.timeSheetApp.rates.Rates;
 import be.vDAB.timeSheetApp.utility.AskTime;
+import be.vDAB.timeSheetApp.utility.Processor;
 
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
 public class BreakSlot implements Slot {
     String description;
-    long[] minutesByType;
+    long[] minutesByType =new long[2];
     LocalTime end;
     LocalTime start;
     long totalMinutes;
+    final LocalTime START_NORMAL_HOURS = LocalTime.of(8,0);
+    final LocalTime END_NORMAL_HOURS = LocalTime.of(18,0);
+    long overUren;
+    long normaleUren;
+    Processor processor = new Processor();
+    double overtimeHourlyRate;
+    double normalHourlyRate;
+    LocalDate date;
 
-   public BreakSlot() {
+
+
+   public BreakSlot(LocalDate date) {
        beginEnEindtijdBepalen();
        setTotalMinutes(start, end);
+       setMinutesByType(start,end);
+       setDayOfWeek(date);
+       setNormalHourlyRate(date);
+       setOvertimeHourlyRate(date);
    }
-    public BreakSlot(LocalTime start, LocalTime end) {
-    this();
-    setTotalMinutes(start, end);
 
-    }
 
     public BreakSlot(LocalTime start,LocalTime end, String description) {
-    this(start, end);
+       setStart(start);
+       setEnd(end);
     setDescription(description);
-        setTotalMinutes(start, end);
+    setTotalMinutes(start, end);
+    }
+    public void setDayOfWeek(LocalDate dayOfWeek) {
+        date = dayOfWeek;
     }
     private void beginEnEindtijdBepalen() {
         start = inputSlot("Give your starting time.");
@@ -61,6 +78,41 @@ public class BreakSlot implements Slot {
     @Override
     public void setMinutesByType(LocalTime start, LocalTime end) {
 
+        if (start.isBefore(START_NORMAL_HOURS) && end.isBefore(START_NORMAL_HOURS)) {
+            overUren = ChronoUnit.MINUTES.between(start, end);
+            minutesByType[0] = overUren;
+        } else if (start.isBefore(START_NORMAL_HOURS) && (end.isAfter(START_NORMAL_HOURS) && end.isBefore(END_NORMAL_HOURS))) {
+            overUren = ChronoUnit.MINUTES.between(start, START_NORMAL_HOURS);
+            normaleUren = ChronoUnit.MINUTES.between(START_NORMAL_HOURS, end);
+            minutesByType[0] = overUren;
+            minutesByType[1] = normaleUren;
+        } else if (start.isAfter(START_NORMAL_HOURS) && end.isBefore(END_NORMAL_HOURS)) {
+            normaleUren = ChronoUnit.MINUTES.between(start, end);
+            minutesByType[1] = normaleUren;
+        } else if ((start.isAfter(START_NORMAL_HOURS) && start.isBefore(END_NORMAL_HOURS)) && end.isAfter(END_NORMAL_HOURS)) {
+            normaleUren = ChronoUnit.MINUTES.between(start, END_NORMAL_HOURS);
+            overUren = ChronoUnit.MINUTES.between(END_NORMAL_HOURS, end);
+            minutesByType[0] = overUren;
+            minutesByType[1] = normaleUren;
+        } else if (start.isAfter(END_NORMAL_HOURS) && end.isAfter(END_NORMAL_HOURS)) {
+            overUren = ChronoUnit.MINUTES.between(start, end);
+            minutesByType[0] = overUren;
+        } else if (start.isBefore(START_NORMAL_HOURS) && end.isAfter(END_NORMAL_HOURS)) {
+            overUren = ChronoUnit.MINUTES.between(start, START_NORMAL_HOURS) + ChronoUnit.MINUTES.between(END_NORMAL_HOURS, end);
+            normaleUren = ChronoUnit.MINUTES.between(START_NORMAL_HOURS, END_NORMAL_HOURS);
+            minutesByType[0] = overUren;
+            minutesByType[1] = normaleUren;
+
+        }
+    }
+    @Override
+    public long[] getMinutesByType(){
+        return minutesByType;
+    }
+
+    @Override
+    public boolean isWorkslot() {
+        return false;
     }
 
     @Override
@@ -81,6 +133,11 @@ public class BreakSlot implements Slot {
     }
 
     @Override
+    public LocalDate getDate() {
+        return null;
+    }
+
+    @Override
     public LocalTime getStart() {
         return start;
     }
@@ -96,6 +153,21 @@ public class BreakSlot implements Slot {
     @Override
     public void printSlotInfo() {
 
+    }
+    public double getNormalHourlyRate() {
+        return normalHourlyRate;
+    }
+
+    public void setNormalHourlyRate(LocalDate date) {
+        this.normalHourlyRate = Rates.valueOf(date.getDayOfWeek().toString()).getNormalHourlyRate();
+    }
+
+    public double getOvertimeHourlyRate() {
+        return overtimeHourlyRate;
+    }
+
+    public void setOvertimeHourlyRate(LocalDate date) {
+        this.overtimeHourlyRate = Rates.valueOf(date.getDayOfWeek().toString()).getOvertimeHourlyRate();
     }
 
     @Override
@@ -125,11 +197,11 @@ public class BreakSlot implements Slot {
 
     @Override
     public String toString() {
-        return "BreakSlot: " +
+        return "Break slot: " +
                 "Description: " + description + '\'' +
-                ", MinutesByType: " + Arrays.toString(minutesByType) +
+                ", Hours: Extra Hours ("+ String.format("%.2f",overtimeHourlyRate)+ " euro/h): " + String.format("%.2fh",processor.goFromMinutesToHours(minutesByType[0])) +", Normal hours ("+ String.format("%.2f",normalHourlyRate) + "euro/h): " +String.format("%.2fh",processor.goFromMinutesToHours(minutesByType[1]))+
                 ", Start: " + start +
                 ", End: " + end +
-                ", TotalMinutes: " + totalMinutes;
+                ", Total: " + totalMinutes+ "min or " +String.format("%.2fh.",processor.goFromMinutesToHours(totalMinutes));
     }
 }

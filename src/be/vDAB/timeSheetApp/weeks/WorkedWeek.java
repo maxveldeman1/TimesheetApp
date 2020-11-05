@@ -7,12 +7,14 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 
 public class WorkedWeek implements Week {
 
     public LocalDate firstDayOfWeek;
     public WorkedDay[] workweek = new WorkedDay[7];
     public boolean isInitialised;
+    DateTimeFormatter formatter =DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public void initialiseWorkweek(){
         System.out.println("Starting a new workweek");
@@ -43,7 +45,7 @@ public class WorkedWeek implements Week {
             jaar = keyboard.askForInt("Give the day:");
         }
         firstDayOfWeek = LocalDate.of(jaar, maand, dag);
-        System.out.println("Uw eerste dag van de week is: " +firstDayOfWeek);
+        System.out.println("Your first day of the week is: " +firstDayOfWeek.format(formatter));
     }
 
 
@@ -63,12 +65,13 @@ public class WorkedWeek implements Week {
             workweek[i] = workedDay;
             System.out.println((i+1) +". " +workweek[i]);
             }
-        System.out.println("");
+        System.out.println(""+"\n"+"----------------------------");
         System.out.println("Returning to menu");
 
 
-        }
-        public void resetWorkWeek() {
+    }
+
+    public void resetWorkWeek() {
             firstDayOfWeek = null;
             for (int i = 0; i <= DayOfWeek.values().length - 1; i++) {
                 workweek[i] = null;

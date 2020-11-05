@@ -1,5 +1,7 @@
 package be.vDAB.timeSheetApp.menu;
 
+import be.vDAB.timeSheetApp.checks.BasicCheck;
+import be.vDAB.timeSheetApp.checks.SpecificCheck;
 import be.vDAB.timeSheetApp.days.WorkedDay;
 import be.vDAB.timeSheetApp.rates.Rates;
 import be.vDAB.timeSheetApp.utility.Choice;
@@ -10,7 +12,7 @@ import java.time.DayOfWeek;
 
 
 public class Menu {
-//opsplisten: askmenu, bootup menu, endmenu
+
     public void bootUpMenu() {
         System.out.println("Welcome to our Time Sheet App" + "\n"+
                 "We are booting up the system for you" +"\n"+
@@ -18,13 +20,13 @@ public class Menu {
 
                 "+++++   =====   +++++");
     }
-
     public void askMenu() {
         WorkedWeek workedWeek = new WorkedWeek();
         Choice choice = new Choice();
         WorkedDay huidigeWerkdag;
-        int menuChoice;
+        int menuChoice =0;
         do {
+            try {
             System.out.println("+++++   =====   +++++" + "\n" +
                     "What do you want to do?" + "\n" +
                     "Type in the number that corresponds with your choice:" + "\n" +
@@ -37,63 +39,92 @@ public class Menu {
                     "7. Print Detailed PayCheck." + "\n" +
                     "8. Quit Application.");
             menuChoice = choice.choiceForMenu("Your choice:");
+                System.out.println(""+"\n"+"---------------------------");
             switch (menuChoice) {
                 case 1:
                     printHourlyRates();
                     break;
                 case 2:
-                    if(workedWeek.isInitialised){
-                        System.out.println("A week has already been started.\nIf you want to start a new one,\nplease Reset the current week in the menu.\n---------------\nReturning to menu.");
-                    }else {
-                    workedWeek.initialiseWorkweek();}
+                    if (workedWeek.isInitialised) {
+                        System.out.println("A week has already been started.\nIf you want to start a new one,\nplease Reset the current week in the menu.\n---------------------------\nReturning to menu.");
+                    } else {
+                        workedWeek.initialiseWorkweek();
+                    }
                     break;
                 case 3:
                     if (workedWeek.isInitialised) {
-                        for (int i =0; i <= DayOfWeek.values().length-1; i++){
-                            System.out.println((i+1) +". " + workedWeek.getWorkweek()[i]);
+                        for (int i = 0; i <= DayOfWeek.values().length - 1; i++) {
+                            System.out.println((i + 1) + ". " + workedWeek.getWorkweek()[i]);
+                            for (int j = 0; j < workedWeek.getWorkweek()[i].getTimeSlots().length; j++) {
+                                if (workedWeek.getWorkweek()[i].getTimeSlots()[j] != null) {
+                                    System.out.println("        " + workedWeek.getWorkweek()[i].getTimeSlots()[j]);
+                                }
+                            }
                         }
                         int keuze = choice.choiceForDay("To which day do you want to add a work/break slot?");
                         huidigeWerkdag = workedWeek.getWorkweek()[keuze - 1];
-                        System.out.println("Adding a workslot on " +huidigeWerkdag);
+                        System.out.println("Adding a workslot on " + huidigeWerkdag);
                         huidigeWerkdag.addSlot();
 
                     } else {
-                        System.out.println("Your workweek has not been started yet.\n----------------\nReturning to menu.");
+                        System.out.println("Your workweek has not been started yet.\n---------------------------\nReturning to menu.");
                     }
                     break;
                 case 4:
                     if (workedWeek.isInitialised) {
-                    for (int i =0; i <= DayOfWeek.values().length-1; i++){
-                        System.out.println((i+1) +". " + workedWeek.getWorkweek()[i]);
-                    }
-                    int keuze = choice.choiceForDay("Of which day do you want to remove a work/break slot?");
-                    huidigeWerkdag = workedWeek.getWorkweek()[keuze - 1];
-                    huidigeWerkdag.removeSlot();
-                        System.out.println("Your slot has been removed.\n--------------\nReturning to menu");
+                        for (int i = 0; i <= DayOfWeek.values().length - 1; i++) {
+                            System.out.println((i + 1) + ". " + workedWeek.getWorkweek()[i]);
+                            for (int j = 0; j < workedWeek.getWorkweek()[i].getTimeSlots().length; j++) {
+                                if (workedWeek.getWorkweek()[i].getTimeSlots()[j] != null) {
+                                    System.out.println("        " + workedWeek.getWorkweek()[i].getTimeSlots()[j]);
+                                }
+                            }
+                        }
+                        int keuze = choice.choiceForDay("Of which day do you want to remove a work/break slot?");
+                        huidigeWerkdag = workedWeek.getWorkweek()[keuze - 1];
+                        huidigeWerkdag.removeSlot();
+                        System.out.println("Your slot has been removed.\n---------------------------\nReturning to menu");
                     } else {
-                    System.out.println("Your workweek has not been started yet.\n----------------\nReturning to menu.");
+                        System.out.println("Your workweek has not been started yet.\n---------------------------\nReturning to menu.");
                     }
                     break;
-                case 5: workedWeek.resetWorkWeek();
+                case 5:
+                    workedWeek.resetWorkWeek();
                     break;
-
-
+                case 6:
+                    System.out.println("Printing paycheck\n---------------------------");
+                    BasicCheck basicCheck = new BasicCheck(workedWeek);
+                    basicCheck.printDayDetails();
+                    System.out.println("\nPrint complete\nReturning to menu.\n---------------------------");
+                    break;
+                case 7:
+                    System.out.println("Printing detailed paycheck\n---------------------------");
+                    SpecificCheck specificCheck = new SpecificCheck(workedWeek);
+                    specificCheck.printWeekDetails();
+                    System.out.println("\nPrint complete\nReturning to menu.\n---------------------------");
+                    break;
+            }
+            } catch (Exception ex){
+                System.out.println("An error has occurred, returning to menu!");
+                ex.printStackTrace();
             }
         }while(menuChoice !=8);
 
-
+    }
+    public void endMenu(){
+        System.out.println("+++++   =====   +++++\nThank you for using our app!\nWe will close down everything and clean up for you.\n  .   .   . Done!\nSee you soon!\n---------------------------");
 
     }
 
     public void printHourlyRates() {
         System.out.printf("Your hourly rates are:%n" +
-                "------------------------------%n"+
+                "---------------------------%n"+
                 "From monday until friday: %n"+
                 "       - From 8h00-18h00: %.2f euro/h %n" +
                 "       - From 0h00-8h00 and from 18h00-24h00: %.2f euro/h %n"+
                 "Saturday: %.2f euro/h %n"+
                 "Sunday:   %.2f euro/h %n"+
-                "------------------------------%n",Rates.FRI.getNormalHourlyRate(), Rates.FRI.getOvertimeHourlyRate(),Rates.SAT.getSaturdayHourlyRate(),Rates.SAT.getSundayHourlyRate());
+                "---------------------------%n",Rates.FRIDAY.getNormalHourlyRate(), Rates.FRIDAY.getOvertimeHourlyRate(),Rates.SATURDAY.getNormalHourlyRate(),Rates.SATURDAY.getNormalHourlyRate());
     }
 
 }

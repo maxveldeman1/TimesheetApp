@@ -29,12 +29,12 @@ public class Processor {
 
         public void goFromHourtoMinutes(double hours) {
             double minutes =  hour * 60;
-            System.out.printf("%.2f uren zijn %.0f minuten", hours, minutes);
+
         }
 
-        public void goFromMinutesToHours(double minutes) {
+        public double goFromMinutesToHours(double minutes) {
             double hours = minutes/ 60;
-            System.out.printf("%.0f minuten zijn %.2f uren",minutes, hours);
+            return hours;
         }
 
 

@@ -11,11 +11,9 @@ import java.time.format.DateTimeFormatter;
 
 
 public class WorkedDay implements Day {
-    long[] minutesByType;
     LocalDate date;
-    Slot[] timeSlots = new Slot[50];
+    Slot[] timeSlots = new Slot[0];
     Keyboard keyboard = new Keyboard();
-    DayOfWeek dayOfWorkWeek;
     int numberOfTimeSlots =0;
     DateTimeFormatter formatter =DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -23,23 +21,30 @@ public class WorkedDay implements Day {
     setDate(date);
     }
 
-
-
+    public LocalDate getDate() {
+        return date;
+    }
 
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-
+    public Slot[] getTimeSlots() {
+        return timeSlots;
+    }
 
     @Override
     public void addSlot() {
+        Slot[] tijdelijkeArray = new Slot[timeSlots.length+1];
+        System.arraycopy(timeSlots, 0, tijdelijkeArray, 0, timeSlots.length);
+        timeSlots = tijdelijkeArray;
         if (findEmptyPlaceInTimeSlots() < timeSlots.length) {
             int choice = getChoiceForSlot("What do you want to add:" + "\n" + "1. Work slot." + "\n" + "2. Break slot." + "\n" + "----------------");
 
+
             if (choice == 1) {
                 System.out.println("Adding a new work slot moment on " + date.getDayOfWeek() + ": "+ date.format(formatter));
-                TimeSlot timeSlot = new TimeSlot();
+                TimeSlot timeSlot = new TimeSlot(date);
                 timeSlot.setDescription(keyboard.askForText("Name your work slot:"));
                 timeSlots[findEmptyPlaceInTimeSlots()] = timeSlot;
                 System.out.println("Work slot added."+"\n"+"--------------------"+"\n"+"Returning to Menu");
@@ -48,7 +53,7 @@ public class WorkedDay implements Day {
                }
             if (choice == 2) {
                 System.out.println("Adding a new Break slot on " + date.getDayOfWeek() + ": "+ date.format(formatter));
-                BreakSlot breakSlot = new BreakSlot();
+                BreakSlot breakSlot = new BreakSlot(date);
                 breakSlot.setDescription(keyboard.askForText("Name your break slot:"));
                 timeSlots[findEmptyPlaceInTimeSlots()] = breakSlot;
                 System.out.println("Break slot added."+"\n"+"--------------------"+"\n"+"Returning to Menu");
@@ -59,19 +64,6 @@ public class WorkedDay implements Day {
         }
     }
 
-    @Override
-    public long totalWorkedMinutes() {
-        return 0;
-    }
-
-    public void printArrayOfSlotsWithoutNull() {
-        for( Slot ts : timeSlots) {
-            if (ts != null) {
-                System.out.println(ts);
-            }
-        }
-    }
-
 
 
 
@@ -79,9 +71,10 @@ public class WorkedDay implements Day {
         int choice = keyboard.askForInt(text);
         if (choice > 2 || choice < 1) {
             System.out.println("Choose a number between 1 and 2.");
-            getChoiceForSlot(text);
-        }
-        return choice;
+            choice = getChoiceForSlot(text);
+            return choice;
+        } else {
+        return choice;}
     }
 
     private int findEmptyPlaceInTimeSlots() {
@@ -96,7 +89,6 @@ public class WorkedDay implements Day {
 
     @Override
     public String toString() {
-
         return date.getDayOfWeek() + ": "+date.format(formatter);
     }
 
@@ -110,21 +102,34 @@ public class WorkedDay implements Day {
                 if (timeSlots[j] != null) {
                     System.out.println((j + 1) + ". " + timeSlots[j]);
                 }
+            }
 
                 int removeSlotchoice = keyboard.askForInt("Please choose a number: ");
                 if (removeSlotchoice > numberOfTimeSlots || removeSlotchoice <= 0) {
+                    System.out.println(removeSlotchoice);
+                    System.out.println(numberOfTimeSlots);
                     System.out.println("This is not a valid timeslot!");
                     removeSlot();
                 } else {
-                    timeSlots[removeSlotchoice - 1] = null;
+                    Slot[] tijdelijkeArray = new Slot[timeSlots.length-1];
+                    int index=0;
+                    for(int l =0; l<timeSlots.length; l++){
+                        if ( l != removeSlotchoice-1) {
+                            tijdelijkeArray[index++] = timeSlots[l];
+                        }
+                    }
                     numberOfTimeSlots--;
+                    timeSlots=tijdelijkeArray;
                 }
+
             }
-        }
+
     }
 
     @Override
     public void setMinutesByType(long[] minutesByType) {
+
+
 
 
     }

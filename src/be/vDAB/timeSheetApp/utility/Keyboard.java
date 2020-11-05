@@ -26,7 +26,7 @@ public class Keyboard {
             number = Integer.parseInt( keyboard.nextLine());
         }
         catch (NumberFormatException nfe){
-            System.out.println("Gelieve een nummer in te geven.");
+            System.out.println("Please enter a number.");
             askForInt(text);
         }
 
