@@ -14,16 +14,11 @@ public class BasicCheck{
     long sumNormalMinutes =0;
     Processor processor = new Processor();
 
-
-
-
     public BasicCheck(WorkedWeek workWeek){
             setWorkweek(workWeek);
     }
 
-    public WorkedWeek getWorkweek() {
-        return workweek;
-    }
+
 
     public void setWorkweek(WorkedWeek workweek) {
         this.workweek = workweek;
@@ -57,8 +52,10 @@ public class BasicCheck{
             double normalRate =Rates.valueOf(workweek.getWorkweek()[i].getDate().getDayOfWeek().toString()).getNormalHourlyRate();
             double overtimeRate = Rates.valueOf(workweek.getWorkweek()[i].getDate().getDayOfWeek().toString()).getOvertimeHourlyRate();
             double totalEarned =  normalRate * normalHours +  overtimeRate *overHours;
-            System.out.println("You have worked "+ somOverMinutes +"min or "+String.format("%.2f",overHours)+"h of extra time at "+String.format("%.2f euro/h.",overtimeRate));
-            System.out.println("You have worked "+ sumNormalMinutes +"min or "+String.format("%.2f",normalHours)+"h of normal hours at "+String.format("%.2f euro/h.",normalRate));
+            System.out.println("You have worked "+ somOverMinutes +"min or "+String.format("%.2f",overHours)+"h of " +
+                    "extra time at "+String.format("%.2f euro/h.",overtimeRate));
+            System.out.println("You have worked "+ sumNormalMinutes +"min or "+String.format("%.2f",normalHours)+"h " +
+                    "of normal hours at "+String.format("%.2f euro/h.",normalRate));
             System.out.println("Total worked: "+(sumNormalMinutes+somOverMinutes)+"min or "+ String.format("%.2fh.",(overHours+normalHours)));
             System.out.println("");
             double btwPercentage=21;
