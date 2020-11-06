@@ -42,7 +42,7 @@ public class SpecificCheck {
         this.workweek = workweek;
     }
 
-    public void printWeekDetails() { //print de hele werkweek met zijn time slots af
+    public void printWeekDetails() {
         double[] dayTotals = new double[7];
         for (int i = 0; i < DayOfWeek.values().length - 1; i++) {
 
@@ -50,11 +50,10 @@ public class SpecificCheck {
             double overtimeRate = Rates.valueOf(workweek.getWorkedWeek()[i].getDate().getDayOfWeek().toString()).getOvertimeHourlyRate();
 
             System.out.println(workweek.getWorkedWeek()[i] + "\n" + "");
-            //print de werkweek af
             for (int j = 0; j < workweek.getWorkedWeek()[i].getTimeSlots().length; j++) {
                 if (workweek.getWorkedWeek()[i].getTimeSlots()[j] != null) {
                     System.out.println("        " + (j + 1) + ". " + workweek.getWorkedWeek()[i].getTimeSlots()[j]);
-                    if (workweek.getWorkedWeek()[i].getTimeSlots()[j].isWorkslot()) {
+                    if (workweek.getWorkedWeek()[i].getTimeSlots()[j].isWorkSlot()) {
 
                         double slotOvertime = processor.goFromMinutesToHours(workweek.getWorkedWeek()[i].getTimeSlots()[j].getMinutesByType()[0]) * overtimeRate;
                         somOverMinutes = overMinutes + workweek.getWorkedWeek()[i].getTimeSlots()[j].getMinutesByType()[0];
@@ -86,7 +85,7 @@ public class SpecificCheck {
             double normalHours = processor.goFromMinutesToHours(normalMinutes);
             double overHours = processor.goFromMinutesToHours(overMinutes);
             double totalDayEarned = normalRate * normalHours + overtimeRate * overHours;
-            printDaydetails(normalHours, overHours, normalRate, overtimeRate, totalDayEarned);
+            printDayDetails(normalHours, overHours, normalRate, overtimeRate, totalDayEarned);
             somOverMinutes = 0;
             overMinutes = 0;
             normalMinutes = 0;
@@ -107,7 +106,7 @@ public class SpecificCheck {
         System.out.println("");
     }
 
-    public void printDaydetails(double normalHours, double overHours, double normalRate, double overtimeRate, double totalEarned) {
+    public void printDayDetails(double normalHours, double overHours, double normalRate, double overtimeRate, double totalEarned) {
         System.out.println("");
         System.out.println("You have worked " + numberFormatter.toTwoDecimals(somOverMinutes) + "min or " + numberFormatter.toTwoDecimals(overHours) + "h of extra time at " + String.format("%.2f euro/h.", overtimeRate));
         System.out.println("You have worked " + sumNormalMinutes + "min or " + numberFormatter.toTwoDecimals(normalHours) + "h of normal hours at " + String.format("%.2f euro/h.", normalRate));

@@ -5,7 +5,7 @@ package be.vDAB.timeSheetApp.utility;
  * out of bounds compared to the int max we are given in the param.
  * <pre>
  *     Choice ch = new Choice();
- *     ch.choice("Wich day do you want to choose?", 8)
+ *     ch.choice("Which day do you want to choose?", 8)
  * </pre>
  *
  * @see Keyboard;

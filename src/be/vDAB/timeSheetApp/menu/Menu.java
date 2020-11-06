@@ -140,7 +140,7 @@ public class Menu {
     /**
      * adds a Slot on a WorkedDay in your WorkedWeek
      *
-     * @param workedWeek prints this workedweek and lets you choose om which day you want to add somethng
+     * @param workedWeek prints this workedweek and lets you choose om which day you want to add something
      * @param choice     the choice of the day.
      */
     public void addingSlot(WorkedWeek workedWeek, Choice choice) {
@@ -149,7 +149,7 @@ public class Menu {
             printWeekTimeSlots(workedWeek);
             int keuze = choice.choice("To which day do you want to add a work/break slot?", 7);
             huidigeWerkdag = workedWeek.getWorkedWeek()[keuze - 1];
-            System.out.println("Adding a workslot on " + huidigeWerkdag);
+            System.out.println("Adding a work slot on " + huidigeWerkdag);
             huidigeWerkdag.addSlot();
 
         } else {

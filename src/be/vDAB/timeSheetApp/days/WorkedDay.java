@@ -135,11 +135,11 @@ public class WorkedDay implements Day {
                 }
             }
 
-            int removeSlotchoice = ch.choice("Please choose a number: ", numberOfTimeSlots);
+            int removeSlotChoice = ch.choice("Please choose a number: ", numberOfTimeSlots);
             Slot[] tijdelijkeArray = new Slot[timeSlots.length - 1];
             int index = 0;
             for (int l = 0; l < timeSlots.length; l++) {
-                if (l != removeSlotchoice - 1) {
+                if (l != removeSlotChoice - 1) {
                     tijdelijkeArray[index++] = timeSlots[l];
                 }
             }

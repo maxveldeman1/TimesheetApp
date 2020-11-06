@@ -51,18 +51,17 @@ public class BasicCheck {
             System.out.println(workweek.getWorkedWeek()[i] + "\n" + "");
             for (int j = 0; j < workweek.getWorkedWeek()[i].getTimeSlots().length; j++) {
                 if (workweek.getWorkedWeek()[i].getTimeSlots()[j] != null) {
-                    if (workweek.getWorkedWeek()[i].getTimeSlots()[j].isWorkslot()) {
+                    if (workweek.getWorkedWeek()[i].getTimeSlots()[j].isWorkSlot()) {
                         somOverMinutes = overMinutes + workweek.getWorkedWeek()[i].getTimeSlots()[j].getMinutesByType()[0];
                         overMinutes = somOverMinutes;
                         sumNormalMinutes = normalMinutes + workweek.getWorkedWeek()[i].getTimeSlots()[j].getMinutesByType()[1];
-                        normalMinutes = sumNormalMinutes;
 
                     } else {
                         somOverMinutes = overMinutes - workweek.getWorkedWeek()[i].getTimeSlots()[j].getMinutesByType()[0];
                         overMinutes = somOverMinutes;
                         sumNormalMinutes = normalMinutes - workweek.getWorkedWeek()[i].getTimeSlots()[j].getMinutesByType()[1];
-                        normalMinutes = sumNormalMinutes;
                     }
+                    normalMinutes = sumNormalMinutes;
                 }
             }
             double normalHours = processor.goFromMinutesToHours(sumNormalMinutes);
@@ -98,8 +97,8 @@ public class BasicCheck {
         System.out.println("Total worked: " + (sumNormalMinutes + somOverMinutes) + "min or " + String.format("%.2fh.", (overHours + normalHours)));
         System.out.println("");
 
-        System.out.printf("Bruto: You have earned %.2f euro.\n" +
-                "Netto: You have earned %.2f euro.\n" +
+        System.out.printf("Gross: You have earned %.2f euro.\n" +
+                "Net: You have earned %.2f euro.\n" +
                 "BTW: %.2f euro at %.2f%%. \n \n", totalEarned, ((totalEarned * (100 - btwPercentage)) / 100), ((totalEarned * btwPercentage) / 100), btwPercentage);
     }
 

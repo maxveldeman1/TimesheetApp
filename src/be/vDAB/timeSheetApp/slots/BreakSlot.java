@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * This class is used to create a Break slot on a WorkedDay, by giving it a LocalDate in can create everything
@@ -50,13 +51,13 @@ public class BreakSlot implements Slot {
     private void beginEnEindtijdBepalen() {
         start = inputSlot("Give your starting time.");
         end = inputSlot("Give your ending time");
-        checkIfEndhourIsBeforeStarttime();
+        checkIfEndHourIsBeforeStartTime();
     }
 
     /**
      * Checks if end isn't before the starting time, otherwise it will give an error and lets you re-enter a start and end.
      */
-    private void checkIfEndhourIsBeforeStarttime() {
+    private void checkIfEndHourIsBeforeStartTime() {
         if (end.isBefore(start)) {
             System.out.println("Please make sure your ending time is not before your starting time." + "\n" + "If your work time is spread across two days, make 2 separate time slots.");
             beginEnEindtijdBepalen();
@@ -127,7 +128,7 @@ public class BreakSlot implements Slot {
      * returns a boolean that is used to differentiate the break and work slots.
      */
     @Override
-    public boolean isWorkslot() {
+    public boolean isWorkSlot() {
         return false;
     }
 
@@ -172,11 +173,11 @@ public class BreakSlot implements Slot {
         BreakSlot breakSlot = (BreakSlot) o;
 
         if (totalMinutes != breakSlot.totalMinutes) return false;
-        if (description != null ? !description.equals(breakSlot.description) : breakSlot.description != null)
+        if (!Objects.equals(description, breakSlot.description))
             return false;
         if (!Arrays.equals(minutesByType, breakSlot.minutesByType)) return false;
-        if (end != null ? !end.equals(breakSlot.end) : breakSlot.end != null) return false;
-        return start != null ? start.equals(breakSlot.start) : breakSlot.start == null;
+        if (!Objects.equals(end, breakSlot.end)) return false;
+        return Objects.equals(start, breakSlot.start);
     }
 
     /**

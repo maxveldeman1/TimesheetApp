@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * This class is used to create a Work slot on a WorkedDay, by giving it a LocalDate in can create everything
@@ -50,13 +51,13 @@ public class TimeSlot implements Slot {
     private void beginEnEindtijdBepalen() {
         start = inputSlot("Give your starting time.");
         end = inputSlot("Give your ending time");
-        checkIfEndhourIsBeforeStarttime();
+        checkIfEndHourIsBeforeStartTime();
     }
 
     /**
      * Checks if end isn't before the starting time, otherwise it will give an error and lets you re-enter a start and end.
      */
-    private void checkIfEndhourIsBeforeStarttime() {
+    private void checkIfEndHourIsBeforeStartTime() {
         if (end.isBefore(start)) {
             System.out.println("Please make sure your ending time is not before your starting time." + "\n" + "If your work time is spread across two days,\nmake 2 separate time slots split across the different days. .");
             beginEnEindtijdBepalen();
@@ -134,7 +135,7 @@ public class TimeSlot implements Slot {
      * returns a boolean that is used to differentiate the break and work slots.
      */
     @Override
-    public boolean isWorkslot() {
+    public boolean isWorkSlot() {
         return true;
     }
 
@@ -172,11 +173,11 @@ public class TimeSlot implements Slot {
         TimeSlot timeSlot = (TimeSlot) o;
 
         if (totalMinutes != timeSlot.totalMinutes) return false;
-        if (description != null ? !description.equals(timeSlot.description) : timeSlot.description != null)
+        if (!Objects.equals(description, timeSlot.description))
             return false;
         if (!Arrays.equals(minutesByType, timeSlot.minutesByType)) return false;
-        if (end != null ? !end.equals(timeSlot.end) : timeSlot.end != null) return false;
-        return start != null ? start.equals(timeSlot.start) : timeSlot.start == null;
+        if (!Objects.equals(end, timeSlot.end)) return false;
+        return Objects.equals(start, timeSlot.start);
     }
 
     /**

@@ -13,5 +13,5 @@ public interface Slot {
 
     long[] getMinutesByType();
 
-    boolean isWorkslot();
+    boolean isWorkSlot();
 }

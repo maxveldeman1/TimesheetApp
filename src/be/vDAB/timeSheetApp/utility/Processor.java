@@ -15,5 +15,5 @@ public class Processor {
         return minutes / 60;
     }
 }
-//TODO: I can use my NumberFormatter inside this class so I dont have to use it both in other classes!
+//TODO: I can use my NumberFormatter inside this class so I don't have to use it both in other classes!
 

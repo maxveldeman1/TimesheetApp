@@ -32,12 +32,12 @@ public class AskTime {
      * @return returns the string of hours but a checked one if it is in range
      */
     public int controlTimeHours(String hours) {
-        int controleHours = Integer.parseInt(hours);
-        if (controleHours >= 24 || controleHours < 0) {
+        int controlHours = Integer.parseInt(hours);
+        if (controlHours >= 24 || controlHours < 0) {
             System.out.println("A day has the hours between 0 and 23.");
             askTimeHours();
         }
-        return controleHours;
+        return controlHours;
     }
 
     /**
@@ -58,12 +58,12 @@ public class AskTime {
      * @return returns the checked minutes if it is in range
      */
     public int controlTimeMinutes(String minutes) {
-        int controleMinutes = Integer.parseInt(minutes);
-        if (controleMinutes >= 60 || controleMinutes < 0) {
+        int controlMinutes = Integer.parseInt(minutes);
+        if (controlMinutes >= 60 || controlMinutes < 0) {
             System.out.println("An hour has the minutes between 0 and 59");
             askMinutes();
         }
-        return controleMinutes;
+        return controlMinutes;
     }
 
     /**
