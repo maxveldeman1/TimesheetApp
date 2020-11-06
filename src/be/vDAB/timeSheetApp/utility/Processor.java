@@ -2,42 +2,18 @@ package be.vDAB.timeSheetApp.utility;
 
 
 /**
- * Dit zet minuten om naar de decimale vorm en omgekeerd.
+ * Utility class that converts an amount of minutes to hours in a decimal form.
+ * <pre>
+ *     Processor pr = new Processor;
+ *     pr.goFromMinutesToHours( 426);
+ *
+ *     this returns 7.1
+ * </pre>
  */
 public class Processor {
-        double minutes;
-        double hour;
-
-
-//    2 methodes: iputminutes naar uur en inputuur naar minuten
-
-        public double getMinutes() {
-            return minutes;
-        }
-
-        public void setMinutes(double minutes) {
-            this.minutes = minutes;
-        }
-
-        public double getHour() {
-            return hour;
-        }
-
-        public void setHour(double hour) {
-            this.hour = hour;
-        }
-
-        public void goFromHourtoMinutes(double hours) {
-            double minutes =  hour * 60;
-
-        }
-
-        public double goFromMinutesToHours(double minutes) {
-            double hours = minutes/ 60;
-            return hours;
-        }
-
-
+    public double goFromMinutesToHours(double minutes) {
+        return minutes / 60;
     }
-
+}
+//TODO: I can use my NumberFormatter inside this class so I dont have to use it both in other classes!
 

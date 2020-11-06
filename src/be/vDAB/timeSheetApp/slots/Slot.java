@@ -1,28 +1,17 @@
 package be.vDAB.timeSheetApp.slots;
 
-
-import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Interface for my break and work slot with the basic methods for Slots.
+ */
 public interface Slot {
 
     void setDescription(String description);
-    String getDescription();
 
-    void setMinutesByType(LocalTime start,LocalTime end);
+    void setMinutesByType(LocalTime start, LocalTime end);
+
     long[] getMinutesByType();
+
     boolean isWorkslot();
-    void setEnd(LocalTime end);
-    LocalTime getEnd();
-
-    void setStart(LocalTime start);
-    LocalDate getDate();
-
-    LocalTime getStart();
-
-    long getTotalMinutes();
-
-    void printSlotInfo();
-
-
 }

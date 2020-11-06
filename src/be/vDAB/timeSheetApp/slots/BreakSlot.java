@@ -4,20 +4,26 @@ import be.vDAB.timeSheetApp.rates.Rates;
 import be.vDAB.timeSheetApp.utility.AskTime;
 import be.vDAB.timeSheetApp.utility.Processor;
 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
+/**
+ * This class is used to create a Break slot on a WorkedDay, by giving it a LocalDate in can create everything
+ * needed in a breakslot.
+ *
+ * @see Processor;
+ * @see Slot;
+ */
 public class BreakSlot implements Slot {
     String description;
-    long[] minutesByType =new long[2];
+    long[] minutesByType = new long[2];
     LocalTime end;
     LocalTime start;
     long totalMinutes;
-    final LocalTime START_NORMAL_HOURS = LocalTime.of(8,0);
-    final LocalTime END_NORMAL_HOURS = LocalTime.of(18,0);
+    final LocalTime START_NORMAL_HOURS = LocalTime.of(8, 0);
+    final LocalTime END_NORMAL_HOURS = LocalTime.of(18, 0);
     long overUren;
     long normaleUren;
     Processor processor = new Processor();
@@ -25,43 +31,46 @@ public class BreakSlot implements Slot {
     double normalHourlyRate;
     LocalDate date;
 
-
-
-   public BreakSlot(LocalDate date) {
-       beginEnEindtijdBepalen();
-       setTotalMinutes(start, end);
-       setMinutesByType(start,end);
-       setDayOfWeek(date);
-       setNormalHourlyRate(date);
-       setOvertimeHourlyRate(date);
-   }
-
-
-    public BreakSlot(LocalTime start,LocalTime end, String description) {
-       setStart(start);
-       setEnd(end);
-    setDescription(description);
-    setTotalMinutes(start, end);
+    public BreakSlot(LocalDate date) {
+        beginEnEindtijdBepalen();
+        setTotalMinutes(start, end);
+        setMinutesByType(start, end);
+        setDayOfWeek(date);
+        setNormalHourlyRate(date);
+        setOvertimeHourlyRate(date);
     }
+
     public void setDayOfWeek(LocalDate dayOfWeek) {
         date = dayOfWeek;
     }
+
+    /**
+     * Creates the starting and ending time and checks if the end isn't before the starting time.
+     */
     private void beginEnEindtijdBepalen() {
         start = inputSlot("Give your starting time.");
         end = inputSlot("Give your ending time");
         checkIfEndhourIsBeforeStarttime();
     }
 
+    /**
+     * Checks if end isn't before the starting time, otherwise it will give an error and lets you re-enter a start and end.
+     */
     private void checkIfEndhourIsBeforeStarttime() {
         if (end.isBefore(start)) {
-            System.out.println("Please make sure your ending time is not before your starting time."+ "\n"+"If your work time is spread across two days, make 2 separate time slots.");
+            System.out.println("Please make sure your ending time is not before your starting time." + "\n" + "If your work time is spread across two days, make 2 separate time slots.");
             beginEnEindtijdBepalen();
         }
     }
+
+    /**
+     * By using AskTime utility class, it lets you enter a time.
+     *
+     * @param text the question which asks for a time.
+     */
     public LocalTime inputSlot(String text) {
         AskTime askTime = new AskTime();
-        LocalTime time = askTime.getLocalTime(text);
-        return time;
+        return askTime.getLocalTime(text);
     }
 
 
@@ -70,11 +79,14 @@ public class BreakSlot implements Slot {
         this.description = description;
     }
 
-    @Override
-    public String getDescription() {
-        return description;
-    }
 
+    /**
+     * Checks all the possibilities of your times to calculate the overtime and normal time worked.
+     * This can be simplified, however i haven't found out how.
+     *
+     * @param start the start time needed to calculate the minutes with
+     * @param end   the end time needed to calculate the minutes with
+     */
     @Override
     public void setMinutesByType(LocalTime start, LocalTime end) {
 
@@ -105,71 +117,53 @@ public class BreakSlot implements Slot {
 
         }
     }
+
     @Override
-    public long[] getMinutesByType(){
+    public long[] getMinutesByType() {
         return minutesByType;
     }
 
+    /**
+     * returns a boolean that is used to differentiate the break and work slots.
+     */
     @Override
     public boolean isWorkslot() {
         return false;
     }
 
-    @Override
-    public void setEnd(LocalTime end) {
-        this.end = end;
-    }
-
-    @Override
-    public LocalTime getEnd() {
-        return end;
-    }
-
-    @Override
-    public void setStart(LocalTime start) {
-        this.start = start;
-
-
-    }
-
-    @Override
-    public LocalDate getDate() {
-        return null;
-    }
-
-    @Override
-    public LocalTime getStart() {
-        return start;
-    }
-
-    @Override
-    public long getTotalMinutes() {
-        return totalMinutes = ChronoUnit.MINUTES.between(start,end);
-
-    }
+    /**
+     * calculates the total minutes between start and end time.
+     */
     public void setTotalMinutes(LocalTime start, LocalTime end) {
-       this.totalMinutes = ChronoUnit.MINUTES.between(start,end);
-    }
-    @Override
-    public void printSlotInfo() {
-
-    }
-    public double getNormalHourlyRate() {
-        return normalHourlyRate;
+        this.totalMinutes = ChronoUnit.MINUTES.between(start, end);
     }
 
+    /**
+     * Goes in Enum Rates and picks the normalHourlyRate linked with this date.
+     *
+     * @param date;
+     * @see Rates;
+     */
     public void setNormalHourlyRate(LocalDate date) {
         this.normalHourlyRate = Rates.valueOf(date.getDayOfWeek().toString()).getNormalHourlyRate();
     }
 
-    public double getOvertimeHourlyRate() {
-        return overtimeHourlyRate;
-    }
-
+    /**
+     * Goes in Enum Rates and picks the OvertimeHourlyRate linked with this date.
+     *
+     * @param date;
+     * @see Rates;
+     */
     public void setOvertimeHourlyRate(LocalDate date) {
         this.overtimeHourlyRate = Rates.valueOf(date.getDayOfWeek().toString()).getOvertimeHourlyRate();
     }
 
+    /**
+     * auto generated equals method
+     *
+     * @param o auto generated
+     * @return a boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -185,6 +179,11 @@ public class BreakSlot implements Slot {
         return start != null ? start.equals(breakSlot.start) : breakSlot.start == null;
     }
 
+    /**
+     * auto generated hashCode
+     *
+     * @return an integer hashcode
+     */
     @Override
     public int hashCode() {
         int result = description != null ? description.hashCode() : 0;
@@ -195,13 +194,18 @@ public class BreakSlot implements Slot {
         return result;
     }
 
+    /**
+     * toString method of BreakSlot
+     *
+     * @return an outprint of the slot
+     */
     @Override
     public String toString() {
         return "Break slot: " +
                 "Description: " + description + '\'' +
-                ", Hours: Extra Hours ("+ String.format("%.2f",overtimeHourlyRate)+ " euro/h): " + String.format("%.2fh",processor.goFromMinutesToHours(minutesByType[0])) +", Normal hours ("+ String.format("%.2f",normalHourlyRate) + "euro/h): " +String.format("%.2fh",processor.goFromMinutesToHours(minutesByType[1]))+
+                ", Hours: Extra Hours (" + String.format("%.2f", overtimeHourlyRate) + " euro/h): " + String.format("%.2fh", processor.goFromMinutesToHours(minutesByType[0])) + ", Normal hours (" + String.format("%.2f", normalHourlyRate) + "euro/h): " + String.format("%.2fh", processor.goFromMinutesToHours(minutesByType[1])) +
                 ", Start: " + start +
                 ", End: " + end +
-                ", Total: " + totalMinutes+ "min or " +String.format("%.2fh.",processor.goFromMinutesToHours(totalMinutes));
+                ", Total: " + totalMinutes + "min or " + String.format("%.2fh.", processor.goFromMinutesToHours(totalMinutes));
     }
 }
