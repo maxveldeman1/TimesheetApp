@@ -102,7 +102,7 @@ public class WorkedWeek implements Week {
             workedWeek[i] = null;
         }
         System.out.println("Your workweek has been reset.");
-        System.out.println("");
+        System.out.println("\n");
         System.out.println("Returning to menu");
         isInitialised = false;
     }

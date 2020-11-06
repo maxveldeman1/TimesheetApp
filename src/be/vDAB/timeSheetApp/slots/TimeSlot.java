@@ -66,12 +66,12 @@ public class TimeSlot implements Slot {
     /**
      * By using AskTime utility class, it lets you enter a time.
      *
-     * @param text
+     * @param text asks a time
+     * @return a LocalDate
      */
     public LocalTime inputSlot(String text) {
         AskTime askTime = new AskTime();
-        LocalTime time = askTime.getLocalTime(text);
-        return time;
+        return askTime.getLocalTime(text);
     }
 
     @Override
@@ -91,8 +91,8 @@ public class TimeSlot implements Slot {
      * Checks all the possibilities of your times to calculate the overtime and normal time worked.
      * This can be simplified, however i haven't found out how.
      *
-     * @param start
-     * @param end
+     * @param start the start time needed to calculate the minutes
+     * @param end   the end time needed to calculate the minutes
      */
     @Override
     public void setMinutesByType(LocalTime start, LocalTime end) {
@@ -161,8 +161,8 @@ public class TimeSlot implements Slot {
     /**
      * auto generated equals method
      *
-     * @param o
-     * @return
+     * @param o auto generated
+     * @return a boolean
      */
     @Override
     public boolean equals(Object o) {
@@ -182,7 +182,7 @@ public class TimeSlot implements Slot {
     /**
      * auto generated hashCode
      *
-     * @return
+     * @return an int hashcode
      */
     @Override
     public int hashCode() {
@@ -197,7 +197,7 @@ public class TimeSlot implements Slot {
     /**
      * toString method of BreakSlot
      *
-     * @return
+     * @return the outprint of the timeSlot
      */
     @Override
     public String toString() {

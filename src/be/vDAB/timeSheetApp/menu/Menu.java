@@ -140,8 +140,8 @@ public class Menu {
     /**
      * adds a Slot on a WorkedDay in your WorkedWeek
      *
-     * @param workedWeek
-     * @param choice
+     * @param workedWeek prints this workedweek and lets you choose om which day you want to add somethng
+     * @param choice     the choice of the day.
      */
     public void addingSlot(WorkedWeek workedWeek, Choice choice) {
         WorkedDay huidigeWerkdag;
@@ -161,8 +161,8 @@ public class Menu {
     /**
      * removes a slot on a WorkedDay in your WorkedWeek
      *
-     * @param workedWeek
-     * @param choice
+     * @param workedWeek prints this workedweek and lets you choose om which day you want to remove something
+     * @param choice     the choice of day
      */
     public void removingSlot(WorkedWeek workedWeek, Choice choice) {
         WorkedDay huidigeWerkdag;
@@ -182,7 +182,7 @@ public class Menu {
     /**
      * Prints out the WorkedWeek with its timeSlots
      *
-     * @param workedWeek
+     * @param workedWeek the workweek of which we will print the timeSlots
      */
     public void printWeekTimeSlots(WorkedWeek workedWeek) {
         for (int i = 0; i <= DayOfWeek.values().length - 1; i++) {
